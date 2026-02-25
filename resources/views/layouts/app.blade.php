@@ -9,9 +9,11 @@
 <body class="bg-gray-100 min-h-screen">
 
     {{-- Navbar --}}
-    <nav class="bg-blue-700 text-white shadow-md">
+    <nav class="bg-teal-500 text-white shadow-md">
         <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
-            <a href="/" class="text-xl font-bold tracking-wide">💊 Farmácia</a>
+            <a href="/" class="flex items-center gap-2 text-xl font-bold tracking-wide">
+            <img src="{{ asset('images/logo.png') }}" alt="Logo" class="h-12 w-12 object-contain">Farmácia
+            </a>
             <div class="flex gap-6 text-sm font-medium">
                 <a href="{{ route('medicamentos.index') }}" class="hover:text-blue-200 transition">Medicamentos</a>
                 <a href="{{ route('pedidos.index') }}" class="hover:text-blue-200 transition">Pedidos</a>

@@ -14,7 +14,7 @@
         <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">Status *</label>
             <select name="status"
-                    class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-400">
+                    class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-400">
                 @foreach(['pendente', 'aprovado', 'enviado', 'entregue', 'cancelado'] as $status)
                     <option value="{{ $status }}" {{ $pedido->status === $status ? 'selected' : '' }}>
                         {{ ucfirst($status) }}
@@ -28,13 +28,13 @@
             <label class="block text-sm font-medium text-gray-700 mb-1">Endereço de Entrega</label>
             <input type="text" name="endereco_entrega"
                    value="{{ old('endereco_entrega', $pedido->endereco_entrega) }}"
-                   class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-400">
+                   class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-400">
         </div>
 
         <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">Observação</label>
             <textarea name="observacao" rows="3"
-                      class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-400">{{ old('observacao', $pedido->observacao) }}</textarea>
+                      class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-400">{{ old('observacao', $pedido->observacao) }}</textarea>
         </div>
 
         <div class="flex gap-3 pt-2">

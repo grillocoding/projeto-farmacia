@@ -14,7 +14,7 @@
         <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">Cliente *</label>
             <select name="user_id"
-                    class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-400
+                    class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-400
                     @error('user_id') border-red-400 @enderror">
                 <option value="">Selecione um cliente</option>
                 @foreach($users as $user)
@@ -42,7 +42,7 @@
                     <div class="col-span-7">
                         <label class="text-xs text-gray-500">Medicamento</label>
                         <select name="items[0][medicamento_id]"
-                                class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-400">
+                                class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-400">
                             <option value="">Selecione</option>
                             @foreach($medicamentos as $med)
                                 <option value="{{ $med->id }}">
@@ -54,7 +54,7 @@
                     <div class="col-span-3">
                         <label class="text-xs text-gray-500">Quantidade</label>
                         <input type="number" name="items[0][quantidade]" min="1" value="1"
-                               class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-400">
+                               class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-400">
                     </div>
                     <div class="col-span-2">
                         <button type="button" onclick="removerItem(this)"
@@ -73,18 +73,18 @@
             <div>
                 <label class="block text-sm font-medium text-gray-700 mb-1">Endereço de Entrega</label>
                 <input type="text" name="endereco_entrega" value="{{ old('endereco_entrega') }}"
-                       class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-400">
+                       class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-400">
             </div>
             <div>
                 <label class="block text-sm font-medium text-gray-700 mb-1">Observação</label>
                 <textarea name="observacao" rows="2"
-                          class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-400">{{ old('observacao') }}</textarea>
+                          class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-400">{{ old('observacao') }}</textarea>
             </div>
         </div>
 
         <div class="flex gap-3 pt-2">
             <button type="submit"
-                    class="bg-green-600 hover:bg-green-700 text-white px-5 py-2 rounded text-sm transition">
+                    class="bg-teal-500 hover:bg-teal-500 text-white px-5 py-2 rounded text-sm transition">
                 Criar Pedido
             </button>
             <a href="{{ route('pedidos.index') }}"
@@ -108,7 +108,7 @@
             <div class="col-span-7">
                 <label class="text-xs text-gray-500">Medicamento</label>
                 <select name="items[${index}][medicamento_id]"
-                        class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-400">
+                        class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-400">
                     <option value="">Selecione</option>
                     ${medicamentosOptions}
                 </select>
@@ -116,7 +116,7 @@
             <div class="col-span-3">
                 <label class="text-xs text-gray-500">Quantidade</label>
                 <input type="number" name="items[${index}][quantidade]" min="1" value="1"
-                       class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-400">
+                       class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-400">
             </div>
             <div class="col-span-2">
                 <button type="button" onclick="removerItem(this)"
