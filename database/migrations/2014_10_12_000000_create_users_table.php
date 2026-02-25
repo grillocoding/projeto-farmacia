@@ -23,13 +23,15 @@ return new class extends Migration
             $table->timestamps();
             $table->softDeletes();
         });
-    }
+    
+        DB::table('users')->insert([
+        'name'       => 'Administrador',
+        'email'      => 'admin@farmacia.com',
+        'password'   => bcrypt('123456'),
+        'role'       => 'admin',
+        'created_at' => now(),
+        'updated_at' => now(),
+    ]);
 
-    /**
-     * Reverse the migrations.
-     */
-    public function down(): void
-    {
-        Schema::dropIfExists('users');
     }
 };

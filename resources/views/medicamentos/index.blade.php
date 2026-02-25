@@ -6,14 +6,14 @@
 <div class="flex items-center justify-between mb-6">
     <h1 class="text-2xl font-bold text-gray-800">Medicamentos</h1>
     <a href="{{ route('medicamentos.create') }}"
-       class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded shadow text-sm transition">
+       class="bg-teal-500 hover:bg-teal-500 text-white px-4 py-2 rounded shadow text-sm transition">
         + Novo Medicamento
     </a>
 </div>
 
 <div class="bg-white rounded-lg shadow overflow-hidden">
     <table class="w-full text-sm text-left">
-        <thead class="bg-green-600 text-white uppercase text-xs">
+        <thead class="bg-teal-500 text-white uppercase text-xs">
             <tr>
                 <th class="px-4 py-3">#</th>
                 <th class="px-4 py-3">Nome</th>
