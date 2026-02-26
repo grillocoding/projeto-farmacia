@@ -60,6 +60,14 @@
                 Entrar
             </button>
 
+            <p class="text-center text-sm text-gray-400 mt-4">
+                Não tem uma conta?
+                     <a href="{{ route('register') }}" class="text-teal-500 hover:underline font-medium">
+                    Cadastre-se
+                </a>
+                </a>
+            </p>
+
         </form>
 
     </div>
