@@ -3,90 +3,178 @@
 @section('title', 'Editar Usuário')
 
 @section('content')
-<div class="max-w-2xl mx-auto">
-    <h1 class="text-2xl font-bold text-gray-800 mb-6">Editar Usuário</h1>
+    <div class="max-w-2xl mx-auto">
+        <h1 class="text-2xl font-bold text-gray-800 mb-6">Editar Usuário</h1>
 
-    <form action="{{ route('users.update', $user) }}" method="POST"
-          class="bg-white rounded-lg shadow p-6 space-y-4">
-        @csrf
-        @method('PUT')
+        <form action="{{ route('users.update', $user) }}" method="POST" class="bg-white rounded-lg shadow p-6 space-y-4">
+            @csrf
+            @method('PUT')
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Nome *</label>
-                <input type="text" name="name" value="{{ old('name', $user->name) }}"
-                       class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-400
-                       @error('name') border-red-400 @enderror">
-                @error('name') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
-            </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Nome *</label>
+                    <input type="text" name="name" value="{{ old('name', $user->name) }}" class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-400
+                           @error('name') border-red-400 @enderror">
+                    @error('name') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
+                </div>
 
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Email *</label>
-                <input type="email" name="email" value="{{ old('email', $user->email) }}"
-                       class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-400
-                       @error('email') border-red-400 @enderror">
-                @error('email') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
-            </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Email *</label>
+                    <input type="email" name="email" value="{{ old('email', $user->email) }}" class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-400
+                           @error('email') border-red-400 @enderror">
+                    @error('email') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
+                </div>
 
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Nova Senha
-                    <span class="text-gray-400 font-normal">(deixe em branco para manter)</span>
-                </label>
-                <input type="password" name="password"
-                       class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-400
-                       @error('password') border-red-400 @enderror">
-                @error('password') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
-            </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Nova Senha
+                        <span class="text-gray-400 font-normal">(deixe em branco para manter)</span>
+                    </label>
+                    <input type="password" name="password" class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-400
+                           @error('password') border-red-400 @enderror">
+                    @error('password') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
+                </div>
 
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Confirmar Nova Senha</label>
-                <input type="password" name="password_confirmation"
-                       class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-400">
-            </div>
-
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Perfil *</label>
-                <select name="role"
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Confirmar Nova Senha</label>
+                    <input type="password" name="password_confirmation"
                         class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-400">
-                    <option value="cliente" {{ old('role', $user->role) === 'cliente' ? 'selected' : '' }}>Cliente</option>
-                    <option value="admin"   {{ old('role', $user->role) === 'admin'   ? 'selected' : '' }}>Admin</option>
-                </select>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Perfil *</label>
+                    <select name="role"
+                        class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-400">
+                        <option value="cliente" {{ old('role', $user->role) === 'cliente' ? 'selected' : '' }}>Cliente
+                        </option>
+                        <option value="admin" {{ old('role', $user->role) === 'admin' ? 'selected' : '' }}>Admin</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">CPF</label>
+                    <input type="text" name="cpf" value="{{ old('cpf', $user->cpf) }}" class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-400
+                           @error('cpf') border-red-400 @enderror">
+                    @error('cpf') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Telefone</label>
+                    <input type="text" name="phone" value="{{ old('phone', $user->phone) }}"
+                        class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-400">
+                </div>
+
+                {{-- CEP --}}
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">CEP</label>
+                    <div class="relative">
+                        <input type="text" id="cep" name="cep" placeholder="00000-000" maxlength="9"
+                            oninput="mascaraCep(this)"
+                            class="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-400">
+                        <span id="cep-loading"
+                            class="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-400 hidden">
+                            Buscando...
+                        </span>
+                    </div>
+                    <p id="cep-erro" class="text-red-500 text-xs mt-1 hidden">CEP não encontrado.</p>
+                </div>
+
+                {{-- Endereço --}}
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Logradouro</label>
+                    <input type="text" name="address" id="address" value="{{ old('address') }}"
+                        class="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-400">
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Número</label>
+                        <input type="text" name="numero" id="numero" value="{{ old('numero') }}"
+                            class="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-400">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Complemento</label>
+                        <input type="text" name="complemento" id="complemento" value="{{ old('complemento') }}"
+                            class="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-400">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Bairro</label>
+                    <input type="text" name="bairro" id="bairro" value="{{ old('bairro') }}"
+                        class="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-400">
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Cidade</label>
+                        <input type="text" name="cidade" id="cidade" value="{{ old('cidade') }}"
+                            class="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-400">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Estado</label>
+                        <input type="text" name="estado" id="estado" maxlength="2" value="{{ old('estado') }}"
+                            class="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-400">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Endereço</label>
+                    <input type="text" name="address" value="{{ old('address', $user->address) }}"
+                        class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-400">
+                </div>
+
             </div>
 
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">CPF</label>
-                <input type="text" name="cpf" value="{{ old('cpf', $user->cpf) }}"
-                       class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-400
-                       @error('cpf') border-red-400 @enderror">
-                @error('cpf') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
-            </div>
-
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Telefone</label>
-                <input type="text" name="phone" value="{{ old('phone', $user->phone) }}"
-                       class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-400">
-            </div>
-
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Endereço</label>
-                <input type="text" name="address" value="{{ old('address', $user->address) }}"
-                       class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-400">
-            </div>
-
-        </div>
-
-        <div class="flex gap-3 pt-2">
-            <button type="submit"
+            <div class="flex gap-3 pt-2">
+                <button type="submit"
                     class="bg-yellow-500 hover:bg-yellow-600 text-white px-5 py-2 rounded text-sm transition">
-                Atualizar
-            </button>
-            <a href="{{ route('users.index') }}"
-               class="bg-gray-200 hover:bg-gray-300 text-gray-700 px-5 py-2 rounded text-sm transition">
-                Cancelar
-            </a>
-        </div>
+                    Atualizar
+                </button>
+                <a href="{{ route('users.index') }}"
+                    class="bg-gray-200 hover:bg-gray-300 text-gray-700 px-5 py-2 rounded text-sm transition">
+                    Cancelar
+                </a>
+            </div>
 
-    </form>
-</div>
+        </form>
+    </div>
+    <script>
+    function mascaraCep(input) {
+        let v = input.value.replace(/\D/g, '');
+        if (v.length > 5) v = v.slice(0, 5) + '-' + v.slice(5, 8);
+        input.value = v;
+        if (v.length === 9) buscarCep(v);
+    }
+
+    async function buscarCep(cep) {
+        const loading = document.getElementById('cep-loading');
+        const erro    = document.getElementById('cep-erro');
+
+        erro.classList.add('hidden');
+        loading.classList.remove('hidden');
+
+        try {
+            const res  = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+            const data = await res.json();
+
+            if (data.erro) {
+                erro.classList.remove('hidden');
+                return;
+            }
+
+            document.getElementById('address').value    = data.logradouro;
+            document.getElementById('bairro').value     = data.bairro;
+            document.getElementById('cidade').value     = data.localidade;
+            document.getElementById('estado').value     = data.uf;
+
+            // Foca no campo número após preencher
+            document.getElementById('numero').focus();
+
+        } catch (e) {
+            erro.classList.remove('hidden');
+        } finally {
+            loading.classList.add('hidden');
+        }
+    }
+</script>
 @endsection

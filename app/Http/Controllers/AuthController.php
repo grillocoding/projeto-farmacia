@@ -48,12 +48,18 @@ class AuthController extends Controller
     public function register(Request $request)
     {
         $validated = $request->validate([
-            'name'     => 'required|string|max:255',
-            'email'    => 'required|email|unique:users,email',
-            'password' => 'required|string|min:8|confirmed',
-            'cpf'      => 'nullable|string|size:14|unique:users,cpf',
-            'phone'    => 'nullable|string|max:20',
-            'address'  => 'nullable|string|max:255',
+        'name'        => 'required|string|max:255',
+        'email'       => 'required|email|unique:users,email',
+        'password'    => 'required|string|min:8|confirmed',
+        'cpf'         => 'nullable|string|size:14|unique:users,cpf',
+        'phone'       => 'nullable|string|max:20',
+        'cep'         => 'nullable|string|max:9',
+        'address'     => 'nullable|string|max:255',
+        'numero'      => 'nullable|string|max:20',
+        'complemento' => 'nullable|string|max:100',
+        'bairro'      => 'nullable|string|max:100',
+        'cidade'      => 'nullable|string|max:100',
+        'estado'      => 'nullable|string|size:2',
         ]);
 
         $validated['password'] = Hash::make($validated['password']);
