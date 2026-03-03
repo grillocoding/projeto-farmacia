@@ -31,7 +31,12 @@ class MedicamentoController extends Controller
             'requer_receita'  => 'boolean',
             'validade'        => 'nullable|date|after:today',
             'descricao'       => 'nullable|string',
+            'imagem'          => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
         ]);
+
+        if ($request->hasFile('imagem')) {
+            $validated['imagem'] = $request->file('imagem')->store('medicamentos', 'public');
+        }
 
         Medicamento::create($validated);
 
@@ -62,8 +67,17 @@ class MedicamentoController extends Controller
             'requer_receita'  => 'boolean',
             'validade'        => 'nullable|date|after:today',
             'descricao'       => 'nullable|string',
+            'imagem'          => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
         ]);
 
+        if ($request->hasFile('imagem')) {
+            
+            if ($medicamento->imagem) {
+                \Storage::disk('public')->delete($medicamento->imagem);
+            }
+            $validated['imagem'] = $request->file('imagem')->store('medicamentos', 'public');
+        }
+        
         $medicamento->update($validated);
 
         return redirect()->route('medicamentos.index')

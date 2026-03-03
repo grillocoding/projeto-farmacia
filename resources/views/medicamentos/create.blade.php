@@ -6,7 +6,7 @@
 <div class="max-w-2xl mx-auto">
     <h1 class="text-2xl font-bold text-gray-800 mb-6">Novo Medicamento</h1>
 
-    <form action="{{ route('medicamentos.store') }}" method="POST"
+    <form action="{{ route('medicamentos.store') }}" method="POST" enctype="multipart/form-data"
           class="bg-white rounded-lg shadow p-6 space-y-4">
         @csrf
 
@@ -87,6 +87,15 @@
             <label class="block text-sm font-medium text-gray-700 mb-1">Descrição</label>
             <textarea name="descricao" rows="3"
                       class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-400">{{ old('descricao') }}</textarea>
+        </div>
+
+        <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Imagem do Produto</label>
+            <input type="file" name="imagem" accept="image/*"
+                   class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-400
+                   @error('imagem') border-red-400 @enderror">
+            @error('imagem') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
+            <p class="text-gray-400 text-xs mt-1">JPG, PNG, GIF ou WEBP. Máx. 2MB.</p>
         </div>
 
         <div class="flex gap-3 pt-2">

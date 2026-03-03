@@ -21,6 +21,13 @@
 
     <div class="bg-white rounded-lg shadow p-6 space-y-4">
 
+        @if($medicamento->imagem)
+        <div class="flex justify-center mb-2">
+            <img src="{{ Storage::url($medicamento->imagem) }}" alt="{{ $medicamento->nome }}"
+                 class="w-32 h-32 object-cover rounded-lg border border-gray-200 shadow-sm">
+        </div>
+        @endif
+
         <div class="grid grid-cols-2 gap-4 text-sm">
             <div>
                 <p class="text-gray-500">Princípio Ativo</p>

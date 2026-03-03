@@ -6,7 +6,7 @@
 <div class="max-w-2xl mx-auto">
     <h1 class="text-2xl font-bold text-gray-800 mb-6">Editar Medicamento</h1>
 
-    <form action="{{ route('medicamentos.update', $medicamento) }}" method="POST"
+    <form action="{{ route('medicamentos.update', $medicamento) }}" method="POST" enctype="multipart/form-data"
           class="bg-white rounded-lg shadow p-6 space-y-4">
         @csrf
         @method('PUT')
@@ -88,6 +88,24 @@
             <label class="block text-sm font-medium text-gray-700 mb-1">Descrição</label>
             <textarea name="descricao" rows="3"
                       class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-400">{{ old('descricao', $medicamento->descricao) }}</textarea>
+        </div>
+
+        <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Imagem do Produto</label>
+
+            @if($medicamento->imagem)
+            <div class="mb-2 flex items-center gap-3">
+                <img src="{{ Storage::url($medicamento->imagem) }}" alt="{{ $medicamento->nome }}"
+                     class="w-16 h-16 object-cover rounded border border-gray-200">
+                <span class="text-xs text-gray-500">Imagem atual. Selecione um novo arquivo para substituir.</span>
+            </div>
+            @endif
+
+            <input type="file" name="imagem" accept="image/*"
+                   class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-400
+                   @error('imagem') border-red-400 @enderror">
+            @error('imagem') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
+            <p class="text-gray-400 text-xs mt-1">JPG, PNG, GIF ou WEBP. Máx. 2MB.</p>
         </div>
 
         <div class="flex gap-3 pt-2">
