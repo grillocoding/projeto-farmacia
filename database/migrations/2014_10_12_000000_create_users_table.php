@@ -20,6 +20,12 @@ return new class extends Migration
             $table->string('cpf', 14)->unique()->nullable();
             $table->string('phone',20)->nullable();
             $table->string('adress')->nullable();
+            $table->string('cep', 9)->nullable();
+            $table->string('bairro')->nullable();
+            $table->string('cidade')->nullable();
+            $table->string('estado', 2)->nullable();
+            $table->string('numero')->nullable();
+            $table->string('complemento')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
