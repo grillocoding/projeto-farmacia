@@ -21,6 +21,7 @@ class Medicamento extends Model
         'requer_receita',
         'validade',
         'descricao',
+        'imagem',
     ];
 
     protected $casts = [

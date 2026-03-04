@@ -23,6 +23,7 @@ return new class extends Migration
             $table->boolean('requer_receita')->default(false);
             $table->date('validade')->nullable();
             $table->text('descricao')->nullable();
+            $table->string('imagem')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
