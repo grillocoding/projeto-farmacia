@@ -7,9 +7,18 @@ use Illuminate\Http\Request;
 
 class MedicamentoController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $medicamentos = Medicamento::latest()->paginate(10);
+        $medicamentos = Medicamento::query()
+            ->when($request->search, function ($query, $search) {
+                $query->where('nome', 'like', "%{$search}%")
+                    ->orWhere('categoria', 'like', "%{$search}%")
+                    ->orWhere('fabricante', 'like', "%{$search}%");
+            })
+            ->latest()
+            ->paginate(10)
+            ->appends(request()->query());
+
         return view('medicamentos.index', compact('medicamentos'));
     }
 

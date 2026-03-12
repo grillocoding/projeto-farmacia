@@ -34,8 +34,13 @@ class UserController extends Controller
         'bairro'      => 'nullable|string|max:100',
         'cidade'      => 'nullable|string|max:100',
         'estado'      => 'nullable|string|size:2',
+        'foto'        => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
         ]);
 
+        if ($request->hasFile('foto')) {
+        $validated['foto'] = $request->file('foto')->store('users', 'public');
+        }
+        
         $validated['password'] = Hash::make($validated['password']);
 
         User::create($validated);
@@ -65,8 +70,17 @@ class UserController extends Controller
             'cpf'      => 'nullable|string|size:14|unique:users,cpf,' . $user->id,
             'phone'    => 'nullable|string|max:20',
             'address'  => 'nullable|string|max:255',
-        ]);
+            'foto' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+            ]);
 
+        if ($request->hasFile('foto')) {
+        // Remove foto antiga se existir
+        if ($user->foto) {
+            \Storage::disk('public')->delete($user->foto);
+        }
+        $validated['foto'] = $request->file('foto')->store('users', 'public');
+        }
+        
         // Só atualiza a senha se foi enviada
         if (!empty($validated['password'])) {
             $validated['password'] = Hash::make($validated['password']);

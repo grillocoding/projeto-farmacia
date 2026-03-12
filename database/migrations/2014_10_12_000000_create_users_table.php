@@ -26,6 +26,10 @@ return new class extends Migration
             $table->string('estado', 2)->nullable();
             $table->string('numero')->nullable();
             $table->string('complemento')->nullable();
+            $table->boolean('two_factor_enabled')->default(false);
+            $table->string('two_factor_code')->nullable();
+            $table->dateTime('two_factor_expires_at')->nullable();
+            $table->string('foto')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

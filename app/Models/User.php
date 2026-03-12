@@ -17,8 +17,9 @@ class User extends Authenticatable
         'password',
         'role',
         'cpf',
-        'phone',
+        'phone', 'foto',
         'adress','cep', 'bairro', 'cidade', 'estado', 'numero', 'complemento',
+         'two_factor_enabled', 'two_factor_code', 'two_factor_expires_at',
         ];
 
     protected $hidden = [
@@ -29,7 +30,25 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
+        'two_factor_enabled'    => 'boolean',
+        'two_factor_expires_at' => 'datetime',
     ];
+
+    public function generateTwoFactorCode(): void
+    {
+        $this->update([
+            'two_factor_code'       => rand(100000, 999999),
+            'two_factor_expires_at' => now()->addMinutes(10),
+        ]);
+    }
+
+    public function resetTwoFactorCode(): void
+{
+    $this->update([
+        'two_factor_code'       => null,
+        'two_factor_expires_at' => null,
+    ]);
+}
 
     public function pedidos()
     {
