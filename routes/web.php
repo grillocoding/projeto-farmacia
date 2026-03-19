@@ -26,8 +26,13 @@ Route::middleware('auth')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::post('/2fa/toggle', [AuthController::class, 'toggleTwoFactor'])->name('2fa.toggle');
     
-    Route::resource('medicamentos', MedicamentoController::class);
-    Route::resource('pedidos', PedidoController::class);
-    Route::resource('users', UserController::class);
+    // Rotas de admin protegidas
+    Route::middleware('admin')->group(function () {
+    
+        Route::resource('medicamentos', MedicamentoController::class);
+        Route::resource('pedidos', PedidoController::class);
+        Route::resource('users', UserController::class);
+    });
+
 });
 
