@@ -17,7 +17,7 @@ class IsAdmin
     public function handle(Request $request, Closure $next): Response
     {
         if (!Auth::check() || !Auth::user()->isAdmin()) {
-            return redirect('/cliente/dashboard')
+            return redirect('/perfil')
                 ->with('error','Acesso não autorizado');
         }
         return $next($request);

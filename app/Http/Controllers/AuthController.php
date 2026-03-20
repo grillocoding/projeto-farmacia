@@ -42,7 +42,7 @@ class AuthController extends Controller
         }
 
         $request->session()->regenerate();
-        return redirect()->intended(route('medicamentos.index'));
+        return redirect()->intended($user->isAdmin() ? route('medicamentos.index') : route('perfil'));
     }
 
     private function sendSms(string $phone, string $message): void
@@ -95,7 +95,7 @@ class AuthController extends Controller
         session()->forget('2fa_user_id');
         $request->session()->regenerate();
 
-        return redirect()->route('medicamentos.index');
+        return redirect()->route($user->isAdmin() ? 'medicamentos.index' : 'perfil');
     }
 
     public function toggleTwoFactor()
@@ -125,7 +125,7 @@ class AuthController extends Controller
 
     public function showRegister()
     {
-        return view('auth.register');
+        return view('perfil');
     }
 
     public function register(Request $request)
@@ -151,7 +151,7 @@ class AuthController extends Controller
         $user = User::create($validated);
         Auth::login($user);
 
-        return redirect()->route('medicamentos.index');
+        return redirect()->route('perfil');
     }
 
     public function perfil()
@@ -198,5 +198,11 @@ class AuthController extends Controller
         $user->update($validated);
 
         return back()->with('success', 'Perfil atualizado com sucesso!');
+    }
+
+    public function clienteDashboard()
+    {
+        $user = Auth::user();
+        return view('cliente.dashboard', compact('user'));
     }
 }

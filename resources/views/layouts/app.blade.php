@@ -21,21 +21,24 @@
                 <span class="text-xl font-bold tracking-wide">Farmácia</span>
             </a>
 
-            @auth
+            @auth   
             <div class="flex items-center gap-2">
-
-                <a href="{{ route('medicamentos.index') }}"
-                   class="px-4 py-2 rounded-lg text-sm font-medium transition hover:bg-teal-400 dark:hover:bg-gray-700">
-                    Medicamentos
-                </a>
-                <a href="{{ route('pedidos.index') }}"
-                   class="px-4 py-2 rounded-lg text-sm font-medium transition hover:bg-teal-400 dark:hover:bg-gray-700">
-                    Pedidos
-                </a>
-                <a href="{{ route('users.index') }}"
-                   class="px-4 py-2 rounded-lg text-sm font-medium transition hover:bg-teal-400 dark:hover:bg-gray-700">
-                    Usuários
-                </a>
+                
+                @if (Auth::user ()->isAdmin())
+                    <a href="{{ route('medicamentos.index') }}"
+                    class="px-4 py-2 rounded-lg text-sm font-medium transition hover:bg-teal-400 dark:hover:bg-gray-700">
+                        Medicamentos
+                    </a>
+                    <a href="{{ route('pedidos.index') }}"
+                    class="px-4 py-2 rounded-lg text-sm font-medium transition hover:bg-teal-400 dark:hover:bg-gray-700">
+                        Pedidos
+                    </a>
+                    <a href="{{ route('users.index') }}"
+                    class="px-4 py-2 rounded-lg text-sm font-medium transition hover:bg-teal-400 dark:hover:bg-gray-700">
+                        Usuários
+                    </a>
+                @endif
+                
 
                 <div class="w-px h-6 bg-teal-400 dark:bg-gray-600 mx-2"></div>
 
