@@ -2,12 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
-use Twilio\Rest\Client;
 
 class AuthController extends Controller
 {
@@ -31,9 +29,29 @@ class AuthController extends Controller
 
         $user = Auth::user();
 
+        // 🔐 2FA
         if ($user->two_factor_enabled) {
+
+            // ⚠️ verifica telefone
+            if (!$user->phone) {
+                Auth::logout();
+                return back()->withErrors([
+                    'email' => 'Cadastre um telefone para usar 2FA.'
+                ]);
+            }
+
+            // gera código
             $user->generateTwoFactorCode();
-            $this->sendSms($user->phone, "Seu código de verificação é: {$user->two_factor_code}");
+
+            // 🔥 LOG PRA TESTE (IMPORTANTE)
+            \Log::info('2FA CODE: ' . $user->two_factor_code);
+
+            // tenta enviar
+            try {
+                $this->sendSms($user->phone, "Seu código de verificação é: {$user->two_factor_code}");
+            } catch (\Exception $e) {
+                \Log::error('Erro ao enviar 2FA: ' . $e->getMessage());
+            }
 
             Auth::logout();
             session(['2fa_user_id' => $user->id]);
@@ -47,15 +65,18 @@ class AuthController extends Controller
 
     private function sendSms(string $phone, string $message): void
     {
-        // Remove tudo que não é número
         $phone = preg_replace('/\D/', '', $phone);
 
-        // Adiciona 55 se não tiver
         if (!str_starts_with($phone, '55')) {
             $phone = '55' . $phone;
         }
 
-        $apiKey  = env('CALLMEBOT_APIKEY');
+        $apiKey = env('CALLMEBOT_APIKEY');
+
+        if (!$apiKey) {
+            throw new \Exception('API KEY não configurada');
+        }
+
         $message = urlencode($message);
 
         $url = "https://api.callmebot.com/whatsapp.php?phone={$phone}&text={$message}&apikey={$apiKey}";
@@ -71,6 +92,7 @@ class AuthController extends Controller
         if (!session('2fa_user_id')) {
             return redirect()->route('login');
         }
+
         return view('auth.verify');
     }
 
@@ -80,19 +102,25 @@ class AuthController extends Controller
             'code' => 'required|digits:6',
         ]);
 
-        $user = User::findOrFail(session('2fa_user_id'));
+        $user = User::find(session('2fa_user_id'));
+
+        if (!$user) {
+            return redirect()->route('login');
+        }
 
         if ($user->two_factor_code !== $request->code) {
             return back()->withErrors(['code' => 'Código inválido.']);
         }
 
         if (now()->isAfter($user->two_factor_expires_at)) {
-            return back()->withErrors(['code' => 'Código expirado. Faça login novamente.']);
+            return back()->withErrors(['code' => 'Código expirado.']);
         }
 
         $user->resetTwoFactorCode();
+
         Auth::login($user);
         session()->forget('2fa_user_id');
+
         $request->session()->regenerate();
 
         return redirect()->route('medicamentos.index');
@@ -112,6 +140,7 @@ class AuthController extends Controller
         }
 
         $user->update(['two_factor_enabled' => true]);
+
         return back()->with('success', '2FA ativado com sucesso!');
     }
 
@@ -120,6 +149,7 @@ class AuthController extends Controller
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
+
         return redirect()->route('login');
     }
 
@@ -149,54 +179,9 @@ class AuthController extends Controller
         $validated['role'] = 'cliente';
 
         $user = User::create($validated);
+
         Auth::login($user);
 
         return redirect()->route('medicamentos.index');
-    }
-
-    public function perfil()
-    {
-        $user = Auth::user();
-        return view('auth.perfil', compact('user'));
-    }
-
-   public function atualizarPerfil(Request $request)
-    {
-        $user = Auth::user();
-
-        $validated = $request->validate([
-            'name'        => 'required|string|max:255',
-            'email'       => 'required|email|unique:users,email,' . $user->id,
-            'cpf'         => 'nullable|string|size:14|unique:users,cpf,' . $user->id,
-            'phone'       => 'nullable|string|max:20',
-            'cep'         => 'nullable|string|max:9',
-            'address'     => 'nullable|string|max:255',
-            'numero'      => 'nullable|string|max:20',
-            'complemento' => 'nullable|string|max:100',
-            'bairro'      => 'nullable|string|max:100',
-            'cidade'      => 'nullable|string|max:100',
-            'estado'      => 'nullable|string|size:2',
-            'password'    => 'nullable|string|min:8|confirmed',
-            'foto'        => 'nullable|image|max:2048',
-        ]);
-
-        if (!empty($validated['password'])) {
-            $validated['password'] = Hash::make($validated['password']);
-        } else {
-            unset($validated['password']);
-        }
-
-        if ($request->hasFile('foto')) {
-            if ($user->foto) {
-                \Storage::disk('public')->delete($user->foto);
-            }
-            $validated['foto'] = $request->file('foto')->store('users', 'public');
-        } else {
-            unset($validated['foto']);
-        }
-
-        $user->update($validated);
-
-        return back()->with('success', 'Perfil atualizado com sucesso!');
     }
 }

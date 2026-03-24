@@ -49,11 +49,17 @@
                 @error('password') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
             </div>
 
+            <!-- 🔥 AQUI FOI ALTERADO -->
             <div class="flex items-center justify-between">
                 <label class="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
                     <input type="checkbox" name="remember" class="w-4 h-4 text-teal-500">
                     Lembrar-me
                 </label>
+
+                <a href="{{ route('password.request') }}"
+                   class="text-sm text-teal-500 hover:text-teal-600 hover:underline transition font-medium">
+                    Esqueci minha senha?
+                </a>
             </div>
 
             <button type="submit"

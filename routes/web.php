@@ -4,6 +4,7 @@ use App\Http\Controllers\MedicamentoController;
 use App\Http\Controllers\PedidoController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ForgotPasswordController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -30,4 +31,12 @@ Route::middleware('auth')->group(function () {
     Route::resource('pedidos', PedidoController::class);
     Route::resource('users', UserController::class);
 });
+
+
+
+Route::get('/forgot-password', [ForgotPasswordController::class, 'showForm'])->name('password.request');
+Route::post('/forgot-password', [ForgotPasswordController::class, 'sendResetLink'])->name('password.email');
+
+Route::get('/reset-password/{token}', [ForgotPasswordController::class, 'showResetForm'])->name('password.reset');
+Route::post('/reset-password', [ForgotPasswordController::class, 'resetPassword'])->name('password.update');
 
