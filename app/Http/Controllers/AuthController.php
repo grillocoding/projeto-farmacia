@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
-use Twilio\Rest\Client;
+use Twilio\Rest\Client; 
 
 class AuthController extends Controller
 {
@@ -42,7 +42,7 @@ class AuthController extends Controller
         }
 
         $request->session()->regenerate();
-        return redirect()->intended($user->isAdmin() ? route('medicamentos.index') : route('perfil'));
+        return redirect()->intended(route('medicamentos.index'));
     }
 
     private function sendSms(string $phone, string $message): void
@@ -95,7 +95,7 @@ class AuthController extends Controller
         session()->forget('2fa_user_id');
         $request->session()->regenerate();
 
-        return redirect()->route($user->isAdmin() ? 'medicamentos.index' : 'perfil');
+        return redirect()->route('medicamentos.index');
     }
 
     public function toggleTwoFactor()
@@ -125,7 +125,7 @@ class AuthController extends Controller
 
     public function showRegister()
     {
-        return view('perfil');
+        return view('auth.register');
     }
 
     public function register(Request $request)
@@ -151,7 +151,7 @@ class AuthController extends Controller
         $user = User::create($validated);
         Auth::login($user);
 
-        return redirect()->route('perfil');
+        return redirect()->route('medicamentos.index');
     }
 
     public function perfil()
@@ -200,9 +200,4 @@ class AuthController extends Controller
         return back()->with('success', 'Perfil atualizado com sucesso!');
     }
 
-    public function clienteDashboard()
-    {
-        $user = Auth::user();
-        return view('cliente.dashboard', compact('user'));
-    }
 }

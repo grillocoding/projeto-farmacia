@@ -24,7 +24,7 @@
             @auth   
             <div class="flex items-center gap-2">
                 
-                @if (Auth::user ()->isAdmin())
+                @if (Auth::user()->isAdmin())
                     <a href="{{ route('medicamentos.index') }}"
                     class="px-4 py-2 rounded-lg text-sm font-medium transition hover:bg-teal-400 dark:hover:bg-gray-700">
                         Medicamentos
@@ -36,6 +36,11 @@
                     <a href="{{ route('users.index') }}"
                     class="px-4 py-2 rounded-lg text-sm font-medium transition hover:bg-teal-400 dark:hover:bg-gray-700">
                         Usuários
+                    </a>
+                @else
+                    <a href="{{ route('medicamentos.index') }}"
+                    class="px-4 py-2 rounded-lg text-sm font-medium transition hover:bg-teal-400 dark:hover:bg-gray-700">
+                        Medicamentos
                     </a>
                 @endif
                 
