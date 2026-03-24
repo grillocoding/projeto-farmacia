@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
-use Twilio\Rest\Client;
+use Twilio\Rest\Client; 
 
 class AuthController extends Controller
 {
@@ -199,4 +199,5 @@ class AuthController extends Controller
 
         return back()->with('success', 'Perfil atualizado com sucesso!');
     }
+
 }

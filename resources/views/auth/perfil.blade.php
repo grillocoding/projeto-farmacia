@@ -30,18 +30,6 @@
         </div>
     </div>
 
-    @if(session('success'))
-        <div class="px-4 py-3 bg-teal-100 dark:bg-teal-900 border border-teal-400 dark:border-teal-700 text-teal-800 dark:text-teal-200 rounded-lg text-sm">
-            ✅ {{ session('success') }}
-        </div>
-    @endif
-
-    @if(session('error'))
-        <div class="px-4 py-3 bg-red-100 dark:bg-red-900 border border-red-400 dark:border-red-700 text-red-800 dark:text-red-200 rounded-lg text-sm">
-            ❌ {{ session('error') }}
-        </div>
-    @endif
-
     {{-- FORM PRINCIPAL --}}
     <form action="{{ route('perfil.update') }}" method="POST" enctype="multipart/form-data" class="space-y-5">
         @csrf
@@ -201,8 +189,8 @@
                     class="bg-teal-500 hover:bg-teal-600 text-white px-6 py-2 rounded-lg text-sm font-semibold transition shadow-sm">
                 Salvar Alterações
             </button>
-            <a href="{{ route('medicamentos.index') }}"
-               class="bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 px-6 py-2 rounded-lg text-sm transition">
+            <a href="{{ Auth::user()->isAdmin() ? route('medicamentos.index') : route('perfil') }}"
+            class="bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 px-6 py-2 rounded-lg text-sm transition">
                 Cancelar
             </a>
         </div>

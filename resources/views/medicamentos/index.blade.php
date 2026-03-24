@@ -6,10 +6,12 @@
 
 <div class="flex items-center justify-between mb-4">
     <h1 class="text-xl font-bold text-gray-800 dark:text-gray-100">Medicamentos</h1>
-    <a href="{{ route('medicamentos.create') }}"
-       class="bg-teal-500 hover:bg-teal-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition shadow-sm">
-        + Novo Medicamento
-    </a>
+    @if(Auth::user()->isAdmin())
+        <a href="{{ route('medicamentos.create') }}"
+           class="bg-teal-500 hover:bg-teal-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition shadow-sm">
+            + Novo Medicamento
+        </a>
+    @endif
 </div>
 
 <form method="GET" action="{{ route('medicamentos.index') }}" class="mb-5 flex gap-2">
@@ -34,11 +36,15 @@
     <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 py-16 text-center">
         <p class="text-4xl mb-3">💊</p>
         <p class="text-gray-400 dark:text-gray-500 text-sm">Nenhum medicamento cadastrado.</p>
-        <a href="{{ route('medicamentos.create') }}" class="mt-3 inline-block text-teal-500 hover:underline text-sm">
-            Cadastrar primeiro medicamento
-        </a>
+        @if(Auth::user()->isAdmin())
+            <a href="{{ route('medicamentos.create') }}" class="mt-3 inline-block text-teal-500 hover:underline text-sm">
+                Cadastrar primeiro medicamento
+            </a>
+        @endif
     </div>
 @else
+
+
 <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3">
     @foreach($medicamentos as $medicamento)
     <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 hover:shadow-md hover:-translate-y-0.5 transition-all relative flex flex-col items-center p-3 group">
@@ -53,17 +59,19 @@
             </span>
         @endif
 
-        <div class="absolute top-2 right-2 flex flex-col gap-1 opacity-0 group-hover:opacity-100 transition-all">
-            <a href="{{ route('medicamentos.edit', $medicamento) }}"
-               class="bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 hover:bg-yellow-50 hover:border-yellow-300 text-yellow-500 rounded-lg w-7 h-7 flex items-center justify-center shadow-sm text-xs"
-               title="Editar">✏️</a>
-            <form action="{{ route('medicamentos.destroy', $medicamento) }}" method="POST"
-                  onsubmit="return confirm('Excluir {{ $medicamento->nome }}?')">
-                @csrf @method('DELETE')
-                <button class="bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 hover:bg-red-50 hover:border-red-300 text-red-500 rounded-lg w-7 h-7 flex items-center justify-center shadow-sm text-xs"
-                        title="Excluir">🗑️</button>
-            </form>
-        </div>
+        @if(Auth::user()->isAdmin())
+            <div class="absolute top-2 right-2 flex flex-col gap-1 opacity-0 group-hover:opacity-100 transition-all">
+                <a href="{{ route('medicamentos.edit', $medicamento) }}"
+                class="bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 hover:bg-yellow-50 hover:border-yellow-300 text-yellow-500 rounded-lg w-7 h-7 flex items-center justify-center shadow-sm text-xs"
+                title="Editar">✏️</a>
+                <form action="{{ route('medicamentos.destroy', $medicamento) }}" method="POST"
+                    onsubmit="return confirm('Excluir {{ $medicamento->nome }}?')">
+                    @csrf @method('DELETE')
+                    <button class="bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 hover:bg-red-50 hover:border-red-300 text-red-500 rounded-lg w-7 h-7 flex items-center justify-center shadow-sm text-xs"
+                            title="Excluir">🗑️</button>
+                </form>
+            </div>
+        @endif
 
         <a href="{{ route('medicamentos.show', $medicamento) }}" class="w-full">
             <div class="w-full h-24 flex items-center justify-center my-2">
