@@ -20,7 +20,6 @@ Route::post('/2fa/verify', [AuthController::class, 'verify'])->name('2fa.verify.
 
 // Rotas protegidas
 Route::middleware('auth')->group(function () {
-    
     Route::get('/perfil', [AuthController::class, 'perfil'])->name('perfil');
     Route::put('/perfil', [AuthController::class, 'atualizarPerfil'])->name('perfil.update');
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
@@ -28,7 +27,6 @@ Route::middleware('auth')->group(function () {
 
     // Todos logados podem ver medicamentos
     Route::get('/medicamentos', [MedicamentoController::class, 'index'])->name('medicamentos.index');
-    Route::get('/medicamentos/{medicamento}', [MedicamentoController::class, 'show'])->name('medicamentos.show');
 
     // Somente admin
     Route::middleware('admin')->group(function () {
@@ -41,5 +39,7 @@ Route::middleware('auth')->group(function () {
         Route::resource('users', UserController::class);
     });
 
+    // Show depois do grupo admin para não conflitar com /create
+    Route::get('/medicamentos/{medicamento}', [MedicamentoController::class, 'show'])->name('medicamentos.show');
 });
 

@@ -52,7 +52,7 @@ class User extends Authenticatable
 
     public function pedidos()
     {
-        return $this->hasMany(Pedidos::class);
+        return $this->hasMany(Pedido::class);
     }
 
     public function isAdmin(): bool
