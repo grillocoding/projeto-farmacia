@@ -26,6 +26,11 @@ Route::middleware('auth')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::post('/2fa/toggle', [AuthController::class, 'toggleTwoFactor'])->name('2fa.toggle');
     
+    // Rotas do carrinho - apenas clientes
+    Route::post('/carrinho/{medicamento}', [CarrinhoController::class, 'adicionar'])->name('carrinho.adicionar');
+    Route::delete('/carrinho/{item}', [CarrinhoController::class, 'remover'])->name('carrinho.remover');
+    Route::post('/carrinho/finalizar', [CarrinhoController::class, 'finalizar'])->name('carrinho.finalizar');
+
     Route::resource('medicamentos', MedicamentoController::class);
     Route::resource('pedidos', PedidoController::class);
     Route::resource('users', UserController::class);
