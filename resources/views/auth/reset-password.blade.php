@@ -12,6 +12,7 @@
             <p class="text-sm text-gray-400 mt-1">Digite sua nova senha</p>
         </div>
 
+        {{-- ERROS --}}
         @if($errors->any())
             <div class="mb-4 px-4 py-3 bg-red-100 border border-red-400 text-red-700 rounded text-sm">
                 {{ $errors->first() }}
@@ -23,13 +24,15 @@
 
             <input type="hidden" name="token" value="{{ $token }}">
 
+            {{-- EMAIL (PROTEGIDO) --}}
             <div>
                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Email</label>
-                <input type="email" name="email" value="{{ $email }}" required
+                <input type="email" name="email" value="{{ $email }}" readonly
                        class="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2 text-sm
-                       bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-100">
+                       bg-gray-100 dark:bg-gray-600 text-gray-500">
             </div>
 
+            {{-- SENHA --}}
             <div>
                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Nova senha</label>
                 <input type="password" name="password" required
@@ -37,6 +40,7 @@
                        bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-100">
             </div>
 
+            {{-- CONFIRMAR --}}
             <div>
                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Confirmar senha</label>
                 <input type="password" name="password_confirmation" required
