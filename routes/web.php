@@ -11,20 +11,41 @@ Route::get('/', function () {
     return redirect()->route('login');
 });
 
-// Rotas públicas
-Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
-Route::post('/login', [AuthController::class, 'login']);
-Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
-Route::post('/register', [AuthController::class, 'register']);
-Route::get('/2fa/verify', [AuthController::class, 'showVerify'])->name('2fa.verify');
-Route::post('/2fa/verify', [AuthController::class, 'verify'])->name('2fa.verify.post');
+// 🔓 LOGIN
+Route::get('/login', function () {
+    return view('auth.login');
+})->name('login');
 
-// Rotas protegidas
+Route::post('/login', [AuthController::class, 'login'])->name('login.post');
+
+// 🔓 REGISTER
+Route::get('/register', function () {
+    return view('auth.register');
+})->name('register');
+
+Route::post('/register', [AuthController::class, 'register'])->name('register.post');
+
+// 🔑 RECUPERAÇÃO DE SENHA
+Route::get('/forgot-password', function () {
+    return view('auth.forgot-password');
+})->name('password.request');
+
+Route::post('/forgot-password', [AuthController::class, 'forgotPassword'])->name('password.email');
+
+Route::get('/reset-password/{token}', function ($token) {
+    return view('auth.reset-password', ['token' => $token]);
+})->name('password.reset');
+
+Route::post('/reset-password', [AuthController::class, 'resetPassword'])->name('password.update');
+
+// 🔒 ROTAS PROTEGIDAS
 Route::middleware('auth')->group(function () {
 
     Route::get('/perfil', [AuthController::class, 'perfil'])->name('perfil');
     Route::put('/perfil', [AuthController::class, 'atualizarPerfil'])->name('perfil.update');
+
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
     Route::post('/2fa/toggle', [AuthController::class, 'toggleTwoFactor'])->name('2fa.toggle');
 
     // Todos logados podem ver medicamentos
@@ -50,5 +71,4 @@ Route::middleware('auth')->group(function () {
 
     // Show depois do grupo admin para não conflitar com /create
     Route::get('/medicamentos/{medicamento}', [MedicamentoController::class, 'show'])->name('medicamentos.show');
-
 });
