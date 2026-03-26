@@ -4,6 +4,7 @@ use App\Http\Controllers\MedicamentoController;
 use App\Http\Controllers\PedidoController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CarrinhoController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -20,6 +21,7 @@ Route::post('/2fa/verify', [AuthController::class, 'verify'])->name('2fa.verify.
 
 // Rotas protegidas
 Route::middleware('auth')->group(function () {
+
     Route::get('/perfil', [AuthController::class, 'perfil'])->name('perfil');
     Route::put('/perfil', [AuthController::class, 'atualizarPerfil'])->name('perfil.update');
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
@@ -27,6 +29,13 @@ Route::middleware('auth')->group(function () {
 
     // Todos logados podem ver medicamentos
     Route::get('/medicamentos', [MedicamentoController::class, 'index'])->name('medicamentos.index');
+
+    // Rotas do carrinho
+    Route::get('/carrinho/pagamento', [CarrinhoController::class, 'pagamento'])->name('carrinho.pagamento');
+    Route::get('/carrinho/confirmacao', [CarrinhoController::class, 'confirmacao'])->name('carrinho.confirmacao');
+    Route::post('/carrinho/finalizar', [CarrinhoController::class, 'finalizar'])->name('carrinho.finalizar');
+    Route::post('/carrinho/{medicamento}', [CarrinhoController::class, 'adicionar'])->name('carrinho.adicionar');
+    Route::delete('/carrinho/{item}', [CarrinhoController::class, 'remover'])->name('carrinho.remover');
 
     // Somente admin
     Route::middleware('admin')->group(function () {
@@ -41,5 +50,5 @@ Route::middleware('auth')->group(function () {
 
     // Show depois do grupo admin para não conflitar com /create
     Route::get('/medicamentos/{medicamento}', [MedicamentoController::class, 'show'])->name('medicamentos.show');
-});
 
+});

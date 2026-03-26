@@ -43,9 +43,65 @@
                         Medicamentos
                     </a>
                 @endif
-                
 
                 <div class="w-px h-6 bg-teal-400 dark:bg-gray-600 mx-2"></div>
+
+                {{-- Carrinho --}}
+                @if(!Auth::user()->isAdmin())
+                    @php
+                        $carrinho = (Auth::check() && !Auth::user()->isAdmin())
+                            ? \App\Models\Pedido::where('user_id', Auth::id())
+                                ->where('status', 'carrinho')
+                                ->with('items.medicamento')
+                                ->first()
+                            : null;
+                        $totalItens = $carrinho ? $carrinho->items()->sum('quantidade') : 0;
+                    @endphp
+                    <div x-data="{ aberto: false }" class="relative">
+                        <button @click="aberto = !aberto"
+                                class="relative px-3 py-2 rounded-lg hover:bg-teal-400 dark:hover:bg-gray-700 transition">
+                                🛒
+                            @if($totalItens > 0)
+                                <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                                    {{ $totalItens }}
+                                </span>
+                            @endif
+                        </button>
+
+                        {{-- Aba lateral do carrinho --}}
+                        <div x-show="aberto" @click.outside="aberto = false"
+                            class="absolute right-0 mt-2 w-80 bg-white dark:bg-gray-800 rounded-xl shadow-xl border border-gray-100 dark:border-gray-700 z-50 p-4">
+                            <h3 class="text-sm font-bold text-gray-700 dark:text-gray-200 mb-3">🛒 Meu Carrinho</h3>
+                            @if($totalItens > 0)
+                                @foreach($carrinho->items as $item)
+                                    <div class="flex items-center justify-between mb-2 text-sm">
+                                        <span class="text-gray-700 dark:text-gray-300">{{ $item->medicamento->nome }}</span>
+                                        <div class="flex items-center gap-2">
+                                            <span class="text-gray-500">x{{ $item->quantidade }}</span>
+                                            <span class="font-bold text-gray-800 dark:text-gray-100">R$ {{ number_format($item->subtotal, 2, ',', '.') }}</span>
+                                            <form action="{{ route('carrinho.remover', $item) }}" method="POST">
+                                                @csrf @method('DELETE')
+                                                <button class="text-red-400 hover:text-red-600 text-xs">✕</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                @endforeach
+                                <div class="border-t border-gray-100 dark:border-gray-700 pt-2 mt-2">
+                                    <div class="flex justify-between text-sm font-bold mb-3">
+                                        <span>Total</span>
+                                        <span>R$ {{ number_format($carrinho->total, 2, ',', '.') }}</span>
+                                    </div>
+                                    <a href="{{ route('carrinho.pagamento') }}"
+                                       class="block w-full bg-teal-500 hover:bg-teal-600 text-white py-2 rounded-lg text-sm font-semibold transition text-center">
+                                        Finalizar Compra
+                                    </a>
+                                </div>
+                            @else
+                                <p class="text-sm text-gray-400 text-center py-4">Carrinho vazio</p>
+                            @endif
+                        </div>
+                    </div>
+                @endif
 
                 {{-- Botão dark mode --}}
                 <button @click="dark = !dark; localStorage.setItem('dark', dark)"
@@ -88,7 +144,6 @@
 
             @guest
                 <div class="flex items-center gap-2">
-                    {{-- Botão dark mode para guests --}}
                     <button @click="dark = !dark; localStorage.setItem('dark', dark)"
                             class="px-3 py-2 rounded-lg hover:bg-teal-400 dark:hover:bg-gray-700 transition text-sm">
                         <span x-show="!dark">🌙</span>
