@@ -4,6 +4,7 @@ use App\Http\Controllers\MedicamentoController;
 use App\Http\Controllers\PedidoController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CarrinhoController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -20,19 +21,34 @@ Route::post('/2fa/verify', [AuthController::class, 'verify'])->name('2fa.verify.
 
 // Rotas protegidas
 Route::middleware('auth')->group(function () {
-    
+
     Route::get('/perfil', [AuthController::class, 'perfil'])->name('perfil');
     Route::put('/perfil', [AuthController::class, 'atualizarPerfil'])->name('perfil.update');
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::post('/2fa/toggle', [AuthController::class, 'toggleTwoFactor'])->name('2fa.toggle');
-    
-    // Rotas do carrinho - apenas clientes
+
+    // Todos logados podem ver medicamentos
+    Route::get('/medicamentos', [MedicamentoController::class, 'index'])->name('medicamentos.index');
+
+    // Rotas do carrinho
+    Route::get('/carrinho/pagamento', [CarrinhoController::class, 'pagamento'])->name('carrinho.pagamento');
+    Route::get('/carrinho/confirmacao', [CarrinhoController::class, 'confirmacao'])->name('carrinho.confirmacao');
+    Route::post('/carrinho/finalizar', [CarrinhoController::class, 'finalizar'])->name('carrinho.finalizar');
     Route::post('/carrinho/{medicamento}', [CarrinhoController::class, 'adicionar'])->name('carrinho.adicionar');
     Route::delete('/carrinho/{item}', [CarrinhoController::class, 'remover'])->name('carrinho.remover');
-    Route::post('/carrinho/finalizar', [CarrinhoController::class, 'finalizar'])->name('carrinho.finalizar');
 
-    Route::resource('medicamentos', MedicamentoController::class);
-    Route::resource('pedidos', PedidoController::class);
-    Route::resource('users', UserController::class);
+    // Somente admin
+    Route::middleware('admin')->group(function () {
+        Route::get('/medicamentos/create', [MedicamentoController::class, 'create'])->name('medicamentos.create');
+        Route::post('/medicamentos', [MedicamentoController::class, 'store'])->name('medicamentos.store');
+        Route::get('/medicamentos/{medicamento}/edit', [MedicamentoController::class, 'edit'])->name('medicamentos.edit');
+        Route::put('/medicamentos/{medicamento}', [MedicamentoController::class, 'update'])->name('medicamentos.update');
+        Route::delete('/medicamentos/{medicamento}', [MedicamentoController::class, 'destroy'])->name('medicamentos.destroy');
+        Route::resource('pedidos', PedidoController::class);
+        Route::resource('users', UserController::class);
+    });
+
+    // Show depois do grupo admin para não conflitar com /create
+    Route::get('/medicamentos/{medicamento}', [MedicamentoController::class, 'show'])->name('medicamentos.show');
+
 });
-
