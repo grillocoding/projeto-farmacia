@@ -65,7 +65,7 @@ class User extends Authenticatable
     // 📦 RELACIONAMENTO PEDIDOS
     public function pedidos()
     {
-        return $this->hasMany(Pedidos::class);
+        return $this->hasMany(Pedido::class);
     }
 
     // 👑 VERIFICA ADMIN
