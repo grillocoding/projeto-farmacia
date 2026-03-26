@@ -8,12 +8,21 @@
     <div class="flex items-center justify-between mb-6">
         <h1 class="text-2xl font-bold text-gray-800">{{ $medicamento->nome }}</h1>
         <div class="flex gap-2">
-            <a href="{{ route('medicamentos.edit', $medicamento) }}"
-               class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded text-sm transition">
-                Editar
-            </a>
+            @if(Auth::user()->isAdmin())
+                <a href="{{ route('medicamentos.edit', $medicamento) }}"
+                class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded text-sm transition">
+                    Editar
+                </a>
+            @else
+                <form action="{{ route('carrinho.adicionar', $medicamento) }}" method="POST">
+                    @csrf
+                    <button class="bg-teal-500 hover:bg-teal-600 text-white px-4 py-2 rounded text-sm transition">
+                        Adicionar ao Carrinho
+                    </button>
+                </form>
+            @endif
             <a href="{{ route('medicamentos.index') }}"
-               class="bg-gray-200 hover:bg-gray-300 text-gray-700 px-4 py-2 rounded text-sm transition">
+            class="bg-gray-200 hover:bg-gray-300 text-gray-700 px-4 py-2 rounded text-sm transition">
                 Voltar
             </a>
         </div>

@@ -71,6 +71,14 @@
                             title="Excluir">🗑️</button>
                 </form>
             </div>
+        @else
+            <div class="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-all">
+                <form action="{{ route('carrinho.adicionar', $medicamento) }}" method="POST">
+                    @csrf
+                    <button class="bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 hover:bg-teal-50 hover:border-teal-300 text-teal-500 rounded-lg w-7 h-7 flex items-center justify-center shadow-sm text-xs"
+                            title="Adicionar ao carrinho">🛒</button>
+                </form>
+            </div>
         @endif
 
         <a href="{{ route('medicamentos.show', $medicamento) }}" class="w-full">

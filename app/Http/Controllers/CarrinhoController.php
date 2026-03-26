@@ -61,8 +61,8 @@ class CarrinhoController extends Controller
     {
         $user = Auth::user();
         $carrinho = Pedido::where('user_id', $user->id)
-                          ->where('status', 'carrinho')
-                          ->first();
+                        ->where('status', 'carrinho')
+                        ->first();
 
         if (!$carrinho || $carrinho->items()->count() === 0) {
             return back()->with('error', 'Seu carrinho está vazio!');
@@ -72,7 +72,28 @@ class CarrinhoController extends Controller
         $carrinho->endereco_entrega = $request->endereco_entrega;
         $carrinho->save();
 
-        return redirect()->route('medicamentos.index')
-                         ->with('success', '🎉 Pedido realizado com sucesso!');
+        return redirect()->route('carrinho.confirmacao');
+    }
+
+    public function confirmacao()
+    {
+        return view('carrinho.confirmacao');
+    }
+
+
+    public function pagamento()
+    {
+        $user = Auth::user();
+        $carrinho = Pedido::where('user_id', $user->id)
+                        ->where('status', 'carrinho')
+                        ->with('items.medicamento')
+                        ->first();
+
+        if (!$carrinho || $carrinho->items()->count() === 0) {
+            return redirect()->route('medicamentos.index')
+                            ->with('error', 'Seu carrinho está vazio!');
+        }
+
+        return view('carrinho.pagamento', compact('carrinho'));
     }
 }
